@@ -11,23 +11,23 @@
 
 ```php
 Schema::create('nova_pending_trix_attachments', function (Blueprint $table) {
-		$table->increments('id');
-		$table->string('draft_id')->index();
-		$table->string('attachment');
-		$table->string('disk');
-		$table->timestamps();
+    $table->increments('id');
+    $table->string('draft_id')->index();
+    $table->string('attachment');
+    $table->string('disk');
+    $table->timestamps();
 });
 
 Schema::create('nova_trix_attachments', function (Blueprint $table) {
-		$table->increments('id');
-		$table->string('attachable_type');
-		$table->unsignedInteger('attachable_id');
-		$table->string('attachment');
-		$table->string('disk');
-		$table->string('url')->index();
-		$table->timestamps();
+    $table->increments('id');
+    $table->string('attachable_type');
+    $table->unsignedInteger('attachable_id');
+    $table->string('attachment');
+    $table->string('disk');
+    $table->string('url')->index();
+    $table->timestamps();
 
-		$table->index(['attachable_type', 'attachable_id']);
+    $table->index(['attachable_type', 'attachable_id']);
 });
 ```
 
@@ -69,7 +69,7 @@ final class ResourceName extends Resource
     }
 		// ...
 }
-``
+```
 
 ## Development
 
