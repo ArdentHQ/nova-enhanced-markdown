@@ -4,7 +4,72 @@
 
 ## Use
 
-@TODO
+> **Note**
+> This package reuses part of the logic used on the `Laravel\Nova\Fields\Trix` Field to store and handle files. This means we need to follow some steps related to file handling [mentioned on the Laravel Nova docs](https://nova.laravel.com/docs/1.0/resources/fields.html#file-uploads) related to adding the migrations and pruning the files.
+
+1. Define two database tables to store pending and persisted Trix uploads. To do so, create a migration with the following table definitions:
+
+```php
+Schema::create('nova_pending_trix_attachments', function (Blueprint $table) {
+		$table->increments('id');
+		$table->string('draft_id')->index();
+		$table->string('attachment');
+		$table->string('disk');
+		$table->timestamps();
+});
+
+Schema::create('nova_trix_attachments', function (Blueprint $table) {
+		$table->increments('id');
+		$table->string('attachable_type');
+		$table->unsignedInteger('attachable_id');
+		$table->string('attachment');
+		$table->string('disk');
+		$table->string('url')->index();
+		$table->timestamps();
+
+		$table->index(['attachable_type', 'attachable_id']);
+});
+```
+
+2. In your `app/Console/Kernel.php` file, you should register a daily job to prune any stale attachments from the pending attachments table and storage. Laravel Nova provides the job implementation needed to accomplish this:
+
+```php
+use Laravel\Nova\Trix\PruneStaleAttachments;
+
+$schedule->call(function () {
+    (new PruneStaleAttachments)();
+})->daily();
+```
+
+3. Add the `EnhancedMarkdown` field to your Nova Resource.
+
+Ensure to call the `withFiles` method if you want to accept image uploads.
+
+```php
+<?php
+namespace App\Nova;
+
+use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Resource;
+use Ardenthq\EnhancedMarkdown\EnhancedMarkdown;
+
+final class ResourceName extends Resource
+{
+    // ....
+    public function fields(NovaRequest $request)
+    {
+        return [
+            // ....
+            EnhancedMarkdown::make('Body')
+                ->withFiles('public')
+                ->rules('required', 'string')
+                ->hideFromIndex(),
+						// ...
+        ];
+    }
+		// ...
+}
+``
 
 ## Development
 
