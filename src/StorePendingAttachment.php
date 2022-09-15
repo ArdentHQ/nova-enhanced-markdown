@@ -43,7 +43,7 @@ class StorePendingAttachment extends TrixStorePendingAttachment
 
         $attachment = $file->store($this->field->getStorageDir(), $disk);
 
-        return Storage::disk($disk)->url(PendingAttachment::create([
+		return Storage::disk($disk)->url(PendingAttachment::create([
             'draft_id'   => $request->draftId,
             'attachment' => $attachment,
             'disk'       => $disk,
