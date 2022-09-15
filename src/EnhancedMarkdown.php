@@ -52,7 +52,7 @@ class EnhancedMarkdown extends Trix
      * @param  string  $path
      * @return $this
      */
-    public function withFiles($disk = null, $path = '/')
+    public function withFiles($disk = 'public', $path = '/')
     {
         $this->withFiles = true;
 

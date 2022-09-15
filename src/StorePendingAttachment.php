@@ -14,6 +14,7 @@ use Spatie\Image\Image;
 use Spatie\Image\Manipulations;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
 use Ardenthq\EnhancedMarkdown\ImageOptimizers\ImagickOptimizer;
+use Illuminate\Filesystem\FilesystemAdapter;
 
 class StorePendingAttachment extends TrixStorePendingAttachment
 {
@@ -29,10 +30,18 @@ class StorePendingAttachment extends TrixStorePendingAttachment
      */
     public function __invoke(Request $request)
     {
-        $this->validate($request, ['attachment' => 'image|required']);
+        $this->validate($request, [
+			'attachment' => 'image|required',
+			'draftId' => 'required',
+		]);
 
-        $disk = $this->field->getStorageDisk();
+		/** @var string $storageDisk */
+        $storageDisk = $this->field->getStorageDisk();
 
+		/** @var string $storageDir */
+        $storageDir = $this->field->getStorageDir();
+
+		/** @var UploadedFile $file */
         $file = $request->file('attachment');
 
         if ($this->isGif($file)) {
@@ -41,18 +50,21 @@ class StorePendingAttachment extends TrixStorePendingAttachment
             $this->resizeImage($file);
         }
 
-        $attachment = $file->store($this->field->getStorageDir(), $disk);
+        $attachment = $file->store($storageDir, $storageDisk);
 
-		return Storage::disk($disk)->url(PendingAttachment::create([
-            'draft_id'   => $request->draftId,
+		/** @var FilesystemAdapter $storage */
+		$storage = Storage::disk($storageDisk);
+
+		return $storage->url(PendingAttachment::create([
+            'draft_id'   => $request->input('draftId'),
             'attachment' => $attachment,
-            'disk'       => $disk,
+            'disk'       => $storageDisk,
         ])->attachment);
     }
 
     private function isImage(UploadedFile $attachment): bool
     {
-        return substr($attachment->getMimeType(), 0, 5) === 'image';
+        return substr($attachment->getMimeType() ?? '', 0, 5) === 'image';
     }
 
     private function isGif(UploadedFile $attachment): bool
@@ -74,9 +86,9 @@ class StorePendingAttachment extends TrixStorePendingAttachment
 
     private function resizeImage(UploadedFile $attachment): void
     {
-        Image::load($attachment->getPathname())
-            ->fit(Manipulations::FIT_MAX, self::ARTICLE_IMAGE_MAX_WIDTH, 0)
-            ->optimize()
-            ->save();
+        $image = Image::load($attachment->getPathname());
+        $image->fit(Manipulations::FIT_MAX, self::ARTICLE_IMAGE_MAX_WIDTH, 0);
+		$image->optimize();
+		$image->save();
     }
 }
