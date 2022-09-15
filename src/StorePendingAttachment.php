@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Ardenthq\EnhancedMarkdown;
 
+use Ardenthq\EnhancedMarkdown\ImageOptimizers\ImagickOptimizer;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
@@ -13,35 +15,33 @@ use Laravel\Nova\Trix\StorePendingAttachment as TrixStorePendingAttachment;
 use Spatie\Image\Image;
 use Spatie\Image\Manipulations;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
-use Ardenthq\EnhancedMarkdown\ImageOptimizers\ImagickOptimizer;
-use Illuminate\Filesystem\FilesystemAdapter;
 
 class StorePendingAttachment extends TrixStorePendingAttachment
 {
     use ValidatesRequests;
 
-    public const ARTICLE_IMAGE_MAX_WIDTH = 927;
+    final public const ARTICLE_IMAGE_MAX_WIDTH = 927;
 
     /**
      * Attach a pending attachment to the field.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @return string
      */
     public function __invoke(Request $request)
     {
         $this->validate($request, [
-			'attachment' => 'image|required',
-			'draftId' => 'required',
-		]);
+            'attachment' => 'image|required',
+            'draftId'    => 'required',
+        ]);
 
-		/** @var string $storageDisk */
+        /** @var string $storageDisk */
         $storageDisk = $this->field->getStorageDisk();
 
-		/** @var string $storageDir */
+        /** @var string $storageDir */
         $storageDir = $this->field->getStorageDir();
 
-		/** @var UploadedFile $file */
+        /** @var UploadedFile $file */
         $file = $request->file('attachment');
 
         if ($this->isGif($file)) {
@@ -52,10 +52,10 @@ class StorePendingAttachment extends TrixStorePendingAttachment
 
         $attachment = $file->store($storageDir, $storageDisk);
 
-		/** @var FilesystemAdapter $storage */
-		$storage = Storage::disk($storageDisk);
+        /** @var FilesystemAdapter $storage */
+        $storage = Storage::disk($storageDisk);
 
-		return $storage->url(PendingAttachment::create([
+        return $storage->url(PendingAttachment::create([
             'draft_id'   => $request->input('draftId'),
             'attachment' => $attachment,
             'disk'       => $storageDisk,
@@ -64,7 +64,7 @@ class StorePendingAttachment extends TrixStorePendingAttachment
 
     private function isImage(UploadedFile $attachment): bool
     {
-        return substr($attachment->getMimeType() ?? '', 0, 5) === 'image';
+        return str_starts_with($attachment->getMimeType() ?? '', 'image');
     }
 
     private function isGif(UploadedFile $attachment): bool
@@ -88,7 +88,7 @@ class StorePendingAttachment extends TrixStorePendingAttachment
     {
         $image = Image::load($attachment->getPathname());
         $image->fit(Manipulations::FIT_MAX, self::ARTICLE_IMAGE_MAX_WIDTH, 0);
-		$image->optimize();
-		$image->save();
+        $image->optimize();
+        $image->save();
     }
 }

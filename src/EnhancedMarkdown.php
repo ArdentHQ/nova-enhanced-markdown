@@ -38,7 +38,7 @@ class EnhancedMarkdown extends Trix
      * @param  string|array<string, mixed>  $preset
      * @return $this
      */
-    public function preset($preset)
+    public function preset(string|array $preset)
     {
         $this->preset = $preset;
 

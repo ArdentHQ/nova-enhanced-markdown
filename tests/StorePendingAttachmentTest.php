@@ -8,65 +8,66 @@ use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
-function fakeRequestFile($file) {
-	// Ensures the `file` method returns the file since the original request
-	// does not work with mocked files.
-	$requestClass = new class extends Request {
-		public $file;
+function fakeRequestFile($file)
+{
+    // Ensures the `file` method returns the file since the original request
+    // does not work with mocked files.
+    $requestClass = new class() extends Request {
+        public $file;
 
-		public function file($key = null, $default = null)
-		{
-			return $this->file;
-		}
-	};
+        public function file($key = null, $default = null)
+        {
+            return $this->file;
+        }
+    };
 
-	$requestClass->file = $file;
+    $requestClass->file = $file;
 
-	app()->bind('request', fn () => $requestClass);
+    app()->bind('request', fn () => $requestClass);
 }
 
 it('stores the image and returns the path', function () {
-	Storage::fake('public');
+    Storage::fake('public');
 
-	$field = new EnhancedMarkdown('content');
+    $field = new EnhancedMarkdown('content');
 
-	$field->withFiles('public');
+    $field->withFiles('public');
 
-	$job = new StorePendingAttachment($field);
+    $job = new StorePendingAttachment($field);
 
-	$image = UploadedFile::fake()->image('image.png');
+    $image = UploadedFile::fake()->image('image.png');
 
-	fakeRequestFile($image);
+    fakeRequestFile($image);
 
-	$request = app('request')->merge([
-		'attachment' => $image,
-		'draftId' => '123',
-	]);
+    $request = app('request')->merge([
+        'attachment' => $image,
+        'draftId'    => '123',
+    ]);
 
-	$response = $job->__invoke($request);
+    $response = $job->__invoke($request);
 
-	expect($response)->toContain('.png', '/storage');
+    expect($response)->toContain('.png', '/storage');
 });
 
 it('stores a gif image and returns the path', function () {
-	Storage::fake('public');
+    Storage::fake('public');
 
-	$field = new EnhancedMarkdown('content');
+    $field = new EnhancedMarkdown('content');
 
-	$field->withFiles('public');
+    $field->withFiles('public');
 
-	$job = new StorePendingAttachment($field);
+    $job = new StorePendingAttachment($field);
 
-	$image = UploadedFile::fake()->image('image.gif');
+    $image = UploadedFile::fake()->image('image.gif');
 
-	fakeRequestFile($image);
+    fakeRequestFile($image);
 
-	$request = app('request')->merge([
-		'attachment' => $image,
-		'draftId' => '123',
-	]);
+    $request = app('request')->merge([
+        'attachment' => $image,
+        'draftId'    => '123',
+    ]);
 
-	$response = $job->__invoke($request);
+    $response = $job->__invoke($request);
 
-	expect($response)->toContain('.gif', '/storage');
+    expect($response)->toContain('.gif', '/storage');
 });

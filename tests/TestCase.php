@@ -9,27 +9,27 @@ use Orchestra\Testbench\TestCase as Orchestra;
 
 abstract class TestCase extends Orchestra
 {
-	protected function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->setUpDatabase($this->app);
     }
 
-	/**
+    /**
      * @param \Illuminate\Foundation\Application $app
      */
     public function getEnvironmentSetUp($app)
     {
         config()->set('database.default', 'sqlite');
         config()->set('database.connections.sqlite', [
-            'driver' => 'sqlite',
+            'driver'   => 'sqlite',
             'database' => ':memory:',
-            'prefix' => '',
+            'prefix'   => '',
         ]);
     }
 
-	/**
+    /**
      * @param \Illuminate\Foundation\Application $app
      */
     protected function setUpDatabase($app)
