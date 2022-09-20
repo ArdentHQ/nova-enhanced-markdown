@@ -64,14 +64,23 @@ final class ResourceName extends Resource
                 ->withFiles('public')
                 ->rules('required', 'string')
                 ->hideFromIndex(),
-						// ...
+            // ...
         ];
     }
-		// ...
+    // ...
 }
 ```
 
 ## Development
+
+1. Run `yarn nova:install` and `yarn install` to install all the necessary dependencies for compiling the view components.
+2. Run `yarn run dev` (or `yarn run watch`) while making changes to the components in your local environment.
+3. If you change the vue components, ensure to compile for production before making a PR.
+
+### Compile for production
+
+1. Run `yarn nova:install` and `yarn install` to install all the necessary dependencies for compiling the view components.
+2. Run `yarn run production`.
 
 ### Analyze the code with `phpstan`
 
