@@ -15,8 +15,8 @@
 - Accepts Drag & Drop and pasting
 
 <p align="center">
-    <img src="./screenshot1.png" />
-    <img src="./screenshot2.png" />
+    <img src="./screenshot-1.png" />
+    <img src="./screenshot-2.png" />
 </p>
 
 ## Installation
