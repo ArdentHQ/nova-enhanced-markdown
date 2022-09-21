@@ -1,6 +1,10 @@
 # Laravel Nova Enhanced Markdown Field
 
-> Custom Markdown Field for Nova with image upload support
+<p align="center">
+    <img src="./banner.jpeg" />
+</p>
+
+> A custom Markdown Field for Nova with image upload support
 
 ## Use
 
