@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace Ardenthq\EnhancedMarkdown;
 
+use Laravel\Nova\Contracts\Previewable;
+use Laravel\Nova\Fields\Markdown\CommonMarkPreset;
+use Laravel\Nova\Fields\Markdown\DefaultPreset;
+use Laravel\Nova\Fields\Markdown\MarkdownPreset;
+use Laravel\Nova\Fields\Markdown\ZeroPreset;
 use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Trix\DeleteAttachments;
 use Laravel\Nova\Trix\DetachAttachment;
 use Laravel\Nova\Trix\DiscardPendingAttachments;
 
-class EnhancedMarkdown extends Trix
+class EnhancedMarkdown extends Trix implements Previewable
 {
     /**
      * The field's component.
@@ -31,6 +36,17 @@ class EnhancedMarkdown extends Trix
      * @var string|array<string, mixed>
      */
     public $preset = 'default';
+
+    /**
+     * The built-in presets for the Markdown field.
+     *
+     * @var string[]
+     */
+    public $presets = [
+        'default'    => DefaultPreset::class,
+        'commonmark' => CommonMarkPreset::class,
+        'zero'       => ZeroPreset::class,
+    ];
 
     /**
      * Define the preset the field should use. Can be "commonmark", "zero", and "default".
@@ -65,6 +81,31 @@ class EnhancedMarkdown extends Trix
              ->prunable();
 
         return $this;
+    }
+
+    /**
+     * Return a preview for the given field value.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function previewFor($value)
+    {
+        return $this->renderer()->convert($value);
+    }
+
+    /**
+     * @return MarkdownPreset
+     */
+    public function renderer()
+    {
+        /** @var string $preset */
+        $preset = $this->preset;
+
+        /** @var MarkdownPreset $renderer */
+        $renderer = new $this->presets[$preset]();
+
+        return $renderer;
     }
 
     /**
