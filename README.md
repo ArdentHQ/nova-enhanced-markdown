@@ -12,7 +12,7 @@
 
 - For Laravel Nova ^4.0
 - Image upload
-- Accepts Drag & Drop and pasting
+- Accepts Drag & Drop / Copy & Paste
 
 <p align="center">
     <img src="./screenshot-1.png" />
