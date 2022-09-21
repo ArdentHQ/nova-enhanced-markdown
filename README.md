@@ -6,6 +6,24 @@
 
 > A custom Markdown Field for Nova with image upload support
 
+[![Stable Version](http://poser.pugx.org/ardenthq/nova-enhanced-markdown/v)](https://packagist.org/packages/ardenthq/nova-enhanced-markdown) [![License](http://poser.pugx.org/ardenthq/nova-enhanced-markdown/license)](https://packagist.org/packages/ardenthq/nova-enhanced-markdown) [![PHP Version Require](http://poser.pugx.org/ardenthq/nova-enhanced-markdown/require/php)](https://packagist.org/packages/ardenthq/nova-enhanced-markdown)
+
+## Features
+
+- For Laravel Nova ^4.0
+- Image upload
+- Accepts Drag & Drop and pasting
+
+<p align="center">
+    <img src="./screenshot1.png" />
+    <img src="./screenshot2.png" />
+</p>
+
+## Installation
+
+```console
+composer require ardenthq/nova-enhanced-markdown
+```
 ## Use
 
 > **Note**
