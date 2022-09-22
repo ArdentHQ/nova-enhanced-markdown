@@ -43,3 +43,9 @@ it('accepts a preset', function () {
 
     expect($field->preset)->toBe('commonmark');
 });
+
+it('generate previews', function () {
+    $field = new EnhancedMarkdown('content');
+
+    expect($field->previewFor('**markdown**'))->toContain('<p><strong>markdown</strong></p>');
+});
