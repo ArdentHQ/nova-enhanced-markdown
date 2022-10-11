@@ -117,7 +117,7 @@ class EnhancedMarkdown extends Trix implements Previewable
     {
         return array_merge(parent::jsonSerialize(), [
             'shouldShow' => $this->shouldBeExpanded(),
-            'preset' => $this->preset,
+            'preset'     => $this->preset,
             'previewFor' => $this->previewFor($this->value ?? ''),
         ]);
     }
