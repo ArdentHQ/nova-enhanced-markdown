@@ -4,6 +4,7 @@ require("@/../../node_modules/codemirror/mode/markdown/markdown.js");
 import MarkdownField from "@/fields/Form/MarkdownField.vue";
 import { FormField } from "@/mixins";
 import Toasted from "toastedjs";
+
 export default {
     extends: MarkdownField,
 
@@ -18,6 +19,51 @@ export default {
             duration: 6000,
         }),
     }),
+    computed: {
+        actions: () => ({
+            ...MarkdownField.computed.actions(),
+
+            image() {
+                if (!this.isEditable) return;
+
+                this.insertAround("![", "](url)");
+
+                const cursor = this.doc().getCursor();
+
+                // Select the url part
+                this.doc().setSelection(
+                    {
+                        line: cursor.line,
+                        ch: cursor.ch - 4,
+                    },
+                    {
+                        line: cursor.line,
+                        ch: cursor.ch - 1,
+                    }
+                );
+            },
+
+            link() {
+                if (!this.isEditable) return;
+
+                this.insertAround("[", "](url)");
+
+                const cursor = this.doc().getCursor();
+
+                // Select the url part
+                this.doc().setSelection(
+                    {
+                        line: cursor.line,
+                        ch: cursor.ch - 4,
+                    },
+                    {
+                        line: cursor.line,
+                        ch: cursor.ch - 1,
+                    }
+                );
+            },
+        }),
+    },
     methods: {
         fill(formData) {
             this.fillIfVisible(
@@ -123,6 +169,14 @@ export default {
 
                     replacePlaceholder(textSelection);
                 });
+        },
+
+        insertAround(start, end) {
+            if (this.doc().somethingSelected()) {
+                MarkdownField.methods.insertAround.call(this, start, end);
+            } else {
+                this.doc().replaceSelection(start + end);
+            }
         },
     },
     mounted() {
