@@ -11,7 +11,7 @@
     ],
     "require": {
         "php": "^8.0",
-        "laravel/framework": "^9.34",
+        "laravel/framework": "^9.0",
         "laravel/nova": "^4.0",
         "spatie/image": "^2.2",
         "spatie/image-optimizer": "^1.6"
