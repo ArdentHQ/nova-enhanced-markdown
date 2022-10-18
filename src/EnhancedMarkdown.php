@@ -8,7 +8,14 @@ use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Contracts\Storable as StorableContract;
 use Laravel\Nova\Fields\Storable;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Illuminate\Contracts\Validation\InvokableRule;
+use Illuminate\Contracts\Validation\Rule;
 
+/**
+ * @template TValidationRules of array<int, \Stringable|string|\Illuminate\Contracts\Validation\Rule|\Illuminate\Contracts\Validation\InvokableRule|callable>|\Stringable|string|(callable(string, mixed, \Closure):void)
+ *
+ * @method static static make(mixed $name, string|\Closure|callable|object|null $attribute = null, callable|null $resolveCallback = null)
+ */
 class EnhancedMarkdown extends Markdown implements StorableContract
 {
     use Storable;
@@ -30,9 +37,16 @@ class EnhancedMarkdown extends Markdown implements StorableContract
     /**
      * The callback that should be executed to store file attachments.
      *
-     * @var (callable(EnhancedMarkdown, UploadedFile):void)|null
+     * @var (callable(\Ardenthq\EnhancedMarkdown\EnhancedMarkdown, \Illuminate\Http\UploadedFile):void)|null
      */
     public $fileParserCallback = null;
+
+    /**
+     * The validation rules for file attachments
+     *
+     * @var TValidationRules
+     */
+    public $attachmentRules = [];
 
     /**
      * Create a new field.
@@ -77,36 +91,34 @@ class EnhancedMarkdown extends Markdown implements StorableContract
         return $this;
     }
 
-    //  /**
-    //  * Set the validation rules for the field.
-    //  *
-    //  * @param  (callable(\Laravel\Nova\Http\Requests\NovaRequest):TValidationRules)|TValidationRules  ...$rules
-    //  * @return $this
-    //  */
-    // public function rules($rules)
-    // {
-    //     $parameters = func_get_args();
+     /**
+     * Set the validation rules for the file.
+     *
+     * @param  (callable(\Laravel\Nova\Http\Requests\NovaRequest):TValidationRules)|TValidationRules  ...$attachmentRules
+     * @return $this
+     */
+    public function attachmentRules($attachmentRules)
+    {
+        $parameters = func_get_args();
 
-    //     $this->rules = (
-    //         $rules instanceof Rule ||
-    //         $rules instanceof InvokableRule ||
-    //         is_string($rules) ||
-    //         count($parameters) > 1
-    //     ) ? $parameters : $rules;
+        $this->attachmentRules = (
+            $attachmentRules instanceof Rule ||
+            $attachmentRules instanceof InvokableRule ||
+            is_string($attachmentRules) ||
+            count($parameters) > 1
+        ) ? $parameters : $attachmentRules;
 
-    //     return $this;
-    // }
+        return $this;
+    }
 
-    // /**
-    //  * Get the validation rules for this field.
-    //  *
-    //  * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-    //  * @return array<string, TValidationRules>
-    //  */
-    // public function getRules(NovaRequest $request)
-    // {
-    //     return [
-    //         $this->attribute => is_callable($this->rules) ? call_user_func($this->rules, $request) : $this->rules,
-    //     ];
-    // }
+    /**
+     * Get the validation rules for this field.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @return TValidationRules
+     */
+    public function getAttachmentRules(NovaRequest $request)
+    {
+        return is_callable($this->attachmentRules) ? call_user_func($this->attachmentRules, $request) : $this->attachmentRules;
+    }
 }

@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Nova\Events\ServingNova;
 use Laravel\Nova\Nova;
-use Ardenthq\EnhancedMarkdown\Http\Middleware\Authorize;
+use Illuminate\Foundation\Application;
 
 class FieldServiceProvider extends ServiceProvider
 {
@@ -35,7 +35,10 @@ class FieldServiceProvider extends ServiceProvider
      */
     protected function routes()
     {
-        if ($this->app->routesAreCached()) {
+        /** @var Application $app */
+        $app = $this->app;
+
+        if ($app->routesAreCached()) {
             return;
         }
 

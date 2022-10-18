@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Ardenthq\EnhancedMarkdown;
 
 use Illuminate\Filesystem\FilesystemAdapter;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -13,8 +12,6 @@ use Ardenthq\EnhancedMarkdown\EnhancedMarkdown;
 
 class StoreAttachment
 {
-    use ValidatesRequests;
-
     /**
      * The field instance.
      *
@@ -41,16 +38,11 @@ class StoreAttachment
      */
     public function __invoke(Request $request)
     {
-        $this->validate($request, [
-            'attachment' => 'file',
-        ]);
-
         /** @var string $storageDisk */
         $storageDisk = $this->field->getStorageDisk();
 
         /** @var string $storageDir */
         $storageDir = $this->field->getStorageDir();
-
 
         /** @var UploadedFile $file */
         $file = $request->file('attachment');
@@ -61,6 +53,7 @@ class StoreAttachment
             );
         }
 
+        /** @var string $attachment */
         $attachment = $file->store($storageDir, $storageDisk);
 
         /** @var FilesystemAdapter $storage */
