@@ -4,18 +4,15 @@ declare(strict_types=1);
 
 namespace Ardenthq\EnhancedMarkdown;
 
-use Laravel\Nova\Contracts\Previewable;
-use Laravel\Nova\Fields\Markdown\CommonMarkPreset;
-use Laravel\Nova\Fields\Markdown\DefaultPreset;
-use Laravel\Nova\Fields\Markdown\MarkdownPreset;
-use Laravel\Nova\Fields\Markdown\ZeroPreset;
-use Laravel\Nova\Fields\Trix;
-use Laravel\Nova\Trix\DeleteAttachments;
-use Laravel\Nova\Trix\DetachAttachment;
-use Laravel\Nova\Trix\DiscardPendingAttachments;
+use Laravel\Nova\Fields\Markdown;
+use Laravel\Nova\Contracts\Storable as StorableContract;
+use Laravel\Nova\Fields\Storable;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
-class EnhancedMarkdown extends Trix implements Previewable
+class EnhancedMarkdown extends Markdown implements StorableContract
 {
+    use Storable;
+
     /**
      * The field's component.
      *
@@ -24,101 +21,90 @@ class EnhancedMarkdown extends Trix implements Previewable
     public $component = 'enhanced-markdown';
 
     /**
-     * Indicates if the element should be shown on the index view.
+     * The callback that should be executed to store file attachments.
      *
-     * @var bool
+     * @var callable
      */
-    public $showOnIndex = false;
+    public $attachCallback;
 
     /**
-     * Indicates the preset the field should use.
+     * The callback that should be executed to store file attachments.
      *
-     * @var string|array<string, mixed>
+     * @var (callable(EnhancedMarkdown, UploadedFile):void)|null
      */
-    public $preset = 'default';
+    public $fileParserCallback = null;
 
     /**
-     * The built-in presets for the Markdown field.
+     * Create a new field.
      *
-     * @var string[]
+     * @param  string  $name
+     * @param  string|\Closure|callable|object|null  $attribute
+     * @param  (callable(mixed, mixed, ?string):mixed)|null  $resolveCallback
+     * @return void
      */
-    public $presets = [
-        'default'    => DefaultPreset::class,
-        'commonmark' => CommonMarkPreset::class,
-        'zero'       => ZeroPreset::class,
-    ];
+    public function __construct($name, $attribute = null, callable $resolveCallback = null)
+    {
+        parent::__construct($name, $attribute, $resolveCallback);
+
+        $this->attach(new StoreAttachment($this));
+    }
 
     /**
-     * Define the preset the field should use. Can be "commonmark", "zero", and "default".
+     * Specify the callback that should be used to store file attachments.
      *
-     * @param  string|array<string, mixed>  $preset
+     * @param  callable  $callback
      * @return $this
      */
-    public function preset(string|array $preset)
+    public function attach(callable $callback)
     {
-        $this->preset = $preset;
+        $this->attachCallback = $callback;
 
         return $this;
     }
 
     /**
-     * Specify that file uploads should be allowed.
+     * Specify the callback that should be used to store file attachments.
      *
-     * @param  string  $disk
-     * @param  string  $path
+     * @param  callable|null  $callback
      * @return $this
      */
-    public function withFiles($disk = 'public', $path = '/')
+    public function parseFile(callable|null $callback)
     {
-        $this->withFiles = true;
-
-        $this->disk($disk)->path($path);
-
-        $this->attach(new StorePendingAttachment($this))
-             ->detach(new DetachAttachment())
-             ->delete(new DeleteAttachments($this))
-             ->discard(new DiscardPendingAttachments())
-             ->prunable();
+        $this->fileParserCallback = $callback;
 
         return $this;
     }
 
-    /**
-     * Return a preview for the given field value.
-     *
-     * @param  string  $value
-     * @return string
-     */
-    public function previewFor($value)
-    {
-        return $this->renderer()->convert($value);
-    }
+    //  /**
+    //  * Set the validation rules for the field.
+    //  *
+    //  * @param  (callable(\Laravel\Nova\Http\Requests\NovaRequest):TValidationRules)|TValidationRules  ...$rules
+    //  * @return $this
+    //  */
+    // public function rules($rules)
+    // {
+    //     $parameters = func_get_args();
 
-    /**
-     * @return MarkdownPreset
-     */
-    public function renderer()
-    {
-        /** @var string $preset */
-        $preset = $this->preset;
+    //     $this->rules = (
+    //         $rules instanceof Rule ||
+    //         $rules instanceof InvokableRule ||
+    //         is_string($rules) ||
+    //         count($parameters) > 1
+    //     ) ? $parameters : $rules;
 
-        /** @var MarkdownPreset $renderer */
-        $renderer = new $this->presets[$preset]();
+    //     return $this;
+    // }
 
-        return $renderer;
-    }
-
-    /**
-     * Prepare the element for JSON serialization.
-     *
-     * @return array<string, mixed>
-     */
-    public function jsonSerialize(): array
-    {
-        return array_merge(parent::jsonSerialize(), [
-            'shouldShow' => $this->shouldBeExpanded(),
-            'preset'     => $this->preset,
-            'previewFor' => $this->previewFor($this->value ?? ''),
-        ]);
-    }
+    // /**
+    //  * Get the validation rules for this field.
+    //  *
+    //  * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+    //  * @return array<string, TValidationRules>
+    //  */
+    // public function getRules(NovaRequest $request)
+    // {
+    //     return [
+    //         $this->attribute => is_callable($this->rules) ? call_user_func($this->rules, $request) : $this->rules,
+    //     ];
+    // }
 }

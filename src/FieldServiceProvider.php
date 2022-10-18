@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Ardenthq\EnhancedMarkdown;
 
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Nova\Events\ServingNova;
 use Laravel\Nova\Nova;
+use Ardenthq\EnhancedMarkdown\Http\Middleware\Authorize;
 
 class FieldServiceProvider extends ServiceProvider
 {
@@ -17,8 +19,29 @@ class FieldServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->app->booted(function () {
+            $this->routes();
+        });
+
         Nova::serving(static function (ServingNova $event) {
             Nova::script('enhanced-markdown', __DIR__.'/../dist/js/field.js');
         });
     }
+
+    /**
+     * Register the tool's routes.
+     *
+     * @return void
+     */
+    protected function routes()
+    {
+        if ($this->app->routesAreCached()) {
+            return;
+        }
+
+        Route::middleware('nova')
+            ->prefix('ardenthq/nova-enhanced-markdown')
+            ->group(__DIR__.'/../routes/api.php');
+    }
+
 }

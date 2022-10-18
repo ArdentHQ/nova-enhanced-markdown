@@ -135,11 +135,10 @@ export default {
 
             Nova.request()
                 .post(
-                    `/nova-api/${this.resourceName}/trix-attachment/${this.field.attribute}`,
+                    `/ardenthq/nova-enhanced-markdown/${this.resourceName}/store/${this.field.attribute}`,
                     data
                 )
-                .then(({ data }) => {
-                    const { url } = data;
+                .then(({ data: url }) => {
                     replacePlaceholder(`![${textSelection}](${url})`);
                 })
                 .catch(({ response }) => {
