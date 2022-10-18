@@ -29,19 +29,12 @@ class FieldServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register the tool's routes.
+     * Register the field routes.
      *
      * @return void
      */
     protected function routes()
     {
-        /** @var Application $app */
-        $app = $this->app;
-
-        if ($app->routesAreCached()) {
-            return;
-        }
-
         Route::middleware('nova')
             ->prefix('ardenthq/nova-enhanced-markdown')
             ->group(__DIR__.'/../routes/api.php');
