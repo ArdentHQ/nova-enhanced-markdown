@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace Ardenthq\EnhancedMarkdown;
 
-use Laravel\Nova\Fields\Markdown;
-use Laravel\Nova\Contracts\Storable as StorableContract;
-use Laravel\Nova\Fields\Storable;
-use Laravel\Nova\Http\Requests\NovaRequest;
 use Illuminate\Contracts\Validation\InvokableRule;
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Http\UploadedFile;
+use Laravel\Nova\Contracts\Storable as StorableContract;
+use Laravel\Nova\Fields\Markdown;
+use Laravel\Nova\Fields\Storable;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
 /**
- * @template TValidationRules of array<int, \Stringable|string|\Illuminate\Contracts\Validation\Rule|\Illuminate\Contracts\Validation\InvokableRule|callable>|\Stringable|string|(callable(string, mixed, \Closure):void)
+ * @template TValidationRules of array<int, (\Stringable | string | Rule | InvokableRule | callable)>|\Stringable|string|callable(string, mixed, \Closure):void
  *
  * @method static static make(mixed $name, string|\Closure|callable|object|null $attribute = null, callable|null $resolveCallback = null)
  */
@@ -37,12 +38,12 @@ class EnhancedMarkdown extends Markdown implements StorableContract
     /**
      * The callback that should be executed to store file attachments.
      *
-     * @var (callable(\Ardenthq\EnhancedMarkdown\EnhancedMarkdown, \Illuminate\Http\UploadedFile):void)|null
+     * @var callable(\Ardenthq\EnhancedMarkdown\EnhancedMarkdown, UploadedFile):void|null
      */
     public $fileParserCallback = null;
 
     /**
-     * The validation rules for file attachments
+     * The validation rules for file attachments.
      *
      * @var TValidationRules
      */
@@ -68,7 +69,6 @@ class EnhancedMarkdown extends Markdown implements StorableContract
     /**
      * Specify the callback that should be used to store file attachments.
      *
-     * @param  callable  $callback
      * @return $this
      */
     public function attach(callable $callback)
@@ -81,7 +81,6 @@ class EnhancedMarkdown extends Markdown implements StorableContract
     /**
      * Specify the callback that should be used to store file attachments.
      *
-     * @param  callable|null  $callback
      * @return $this
      */
     public function parseFile(callable|null $callback)
@@ -91,10 +90,10 @@ class EnhancedMarkdown extends Markdown implements StorableContract
         return $this;
     }
 
-     /**
+    /**
      * Set the validation rules for the file.
      *
-     * @param  (callable(\Laravel\Nova\Http\Requests\NovaRequest):TValidationRules)|TValidationRules  ...$attachmentRules
+     * @param callable(NovaRequest):TValidationRules|TValidationRules ...$attachmentRules
      * @return $this
      */
     public function attachmentRules($attachmentRules)
@@ -114,7 +113,6 @@ class EnhancedMarkdown extends Markdown implements StorableContract
     /**
      * Get the validation rules for this field.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return TValidationRules
      */
     public function getAttachmentRules(NovaRequest $request)

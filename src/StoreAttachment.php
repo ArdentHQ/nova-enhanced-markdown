@@ -8,30 +8,21 @@ use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Ardenthq\EnhancedMarkdown\EnhancedMarkdown;
 
 class StoreAttachment
 {
     /**
-     * The field instance.
-     *
-     * @var \Ardenthq\EnhancedMarkdown\EnhancedMarkdown
-     */
-    public $field;
-
-    /**
      * Create a new invokable instance.
      *
-     * @param  \Ardenthq\EnhancedMarkdown\EnhancedMarkdown  $field
+     * @param EnhancedMarkdown $field
      * @return void
      */
-    public function __construct(EnhancedMarkdown $field)
+    public function __construct(public EnhancedMarkdown $field)
     {
-        $this->field = $field;
     }
 
     /**
-     * Stores the file on the storage and returns the url
+     * Stores the file on the storage and returns the url.
      *
      * @param Request $request
      * @return string
@@ -49,7 +40,9 @@ class StoreAttachment
 
         if (is_callable($this->field->fileParserCallback)) {
             call_user_func(
-                $this->field->fileParserCallback, $this->field, $file
+                $this->field->fileParserCallback,
+                $this->field,
+                $file
             );
         }
 

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Ardenthq\EnhancedMarkdown;
 
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Nova\Events\ServingNova;
 use Laravel\Nova\Nova;
-use Illuminate\Foundation\Application;
 
 class FieldServiceProvider extends ServiceProvider
 {
@@ -46,5 +46,4 @@ class FieldServiceProvider extends ServiceProvider
             ->prefix('ardenthq/nova-enhanced-markdown')
             ->group(__DIR__.'/../routes/api.php');
     }
-
 }

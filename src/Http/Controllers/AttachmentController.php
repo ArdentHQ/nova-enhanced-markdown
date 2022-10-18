@@ -1,10 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Ardenthq\EnhancedMarkdown\Http\Controllers;
 
-use Illuminate\Routing\Controller;
-use Laravel\Nova\Http\Requests\NovaRequest;
+use Ardenthq\EnhancedMarkdown\EnhancedMarkdown;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Routing\Controller;
+use Laravel\Nova\Fields\Field;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
 class AttachmentController extends Controller
 {
@@ -12,10 +16,10 @@ class AttachmentController extends Controller
 
     public function __invoke(NovaRequest $request, string $resource, string $field): string
     {
-        /** @var \Laravel\Nova\Fields\Field&\Ardenthq\EnhancedMarkdown\EnhancedMarkdown $novaField */
+        /** @var Field&EnhancedMarkdown $novaField */
         $novaField = $request->newResource()
                         ->availableFields($request)
-                        ->findFieldByAttribute($field, function () {
+                        ->findFieldByAttribute($field, static function () {
                             abort(404);
                         });
 
@@ -28,7 +32,8 @@ class AttachmentController extends Controller
         ]);
 
         return call_user_func(
-            $novaField->attachCallback, $request
+            $novaField->attachCallback,
+            $request
         );
     }
 }
