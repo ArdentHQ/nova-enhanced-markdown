@@ -3,10 +3,7 @@
 declare(strict_types=1);
 
 use Ardenthq\EnhancedMarkdown\EnhancedMarkdown;
-use Ardenthq\EnhancedMarkdown\StorePendingAttachment;
-use Laravel\Nova\Trix\DeleteAttachments;
-use Laravel\Nova\Trix\DetachAttachment;
-use Laravel\Nova\Trix\DiscardPendingAttachments;
+use Ardenthq\EnhancedMarkdown\StoreAttachment;
 
 it('creates an instance', function () {
     $field = new EnhancedMarkdown('content');
@@ -23,15 +20,7 @@ it('creates an instance', function () {
 it('accepts files', function () {
     $field = new EnhancedMarkdown('content');
 
-    $field->withFiles('disk-name', 'custom-path');
-
-    expect($field->withFiles)->toBeTrue();
-    expect($field->prunable)->toBeTrue();
-
-    expect($field->attachCallback)->toBeInstanceOf(StorePendingAttachment::class);
-    expect($field->detachCallback)->toBeInstanceOf(DetachAttachment::class);
-    expect($field->deleteCallback)->toBeInstanceOf(DeleteAttachments::class);
-    expect($field->discardCallback)->toBeInstanceOf(DiscardPendingAttachments::class);
+    expect($field->attachCallback)->toBeInstanceOf(StoreAttachment::class);
 });
 
 it('accepts a preset', function () {

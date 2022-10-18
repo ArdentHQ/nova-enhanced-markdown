@@ -51,6 +51,7 @@ class StoreAttachment
         /** @var string $storageDir */
         $storageDir = $this->field->getStorageDir();
 
+
         /** @var UploadedFile $file */
         $file = $request->file('attachment');
 

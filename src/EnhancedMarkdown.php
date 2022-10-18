@@ -47,6 +47,8 @@ class EnhancedMarkdown extends Markdown implements StorableContract
         parent::__construct($name, $attribute, $resolveCallback);
 
         $this->attach(new StoreAttachment($this));
+
+        $this->disk('public');
     }
 
     /**
