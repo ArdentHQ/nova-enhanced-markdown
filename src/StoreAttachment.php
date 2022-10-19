@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Ardenthq\EnhancedMarkdown;
 
 use Illuminate\Filesystem\FilesystemAdapter;
+use Illuminate\Http\File;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -39,19 +40,36 @@ class StoreAttachment
         $file = $request->file('attachment');
 
         if (is_callable($this->field->fileParserCallback)) {
-            call_user_func(
+            // Some parses like the ones the spatie media library used doesnt
+            // affect the original instance so we dont neccesary need to return
+            // anything in some other cases the user may want to return an updated
+            // instance of the file that is going to be stored.
+            $result = call_user_func(
                 $this->field->fileParserCallback,
                 $this->field,
                 $file
             );
-        }
 
-        /** @var string $attachment */
-        $attachment = $file->store($storageDir, $storageDisk);
+            // We only replace the file if the parser callaback returned a file
+            // that can be stored with the storage disk.
+            if ($this->isStorable($result)) {
+                $file = $result;
+            }
+        }
 
         /** @var FilesystemAdapter $storage */
         $storage = Storage::disk($storageDisk);
 
-        return $storage->url($attachment);
+        /** @var string $attachmentPath */
+        $attachmentPath = $storage->putFile($storageDir, $file);
+
+        return $storage->url($attachmentPath);
+    }
+
+    private function isStorable(mixed $value): bool
+    {
+        return $value instanceof UploadedFile
+            || $value instanceof File
+            || is_string($value);
     }
 }
