@@ -6,6 +6,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Nova\Nova;
 use Tests\fixtures\ExampleResource;
+use Tests\fixtures\ExampleResourceThatReplacesTheFile;
 use Tests\fixtures\ExampleResourceWithAttachmentRules;
 use Tests\fixtures\ExampleResourceWithCustomFileParser;
 
@@ -60,6 +61,22 @@ it('uses a custom parser for the files', function () {
     Storage::fake('public');
 
     $response = $this->postJson('/ardenthq/nova-enhanced-markdown/'.ExampleResourceWithCustomFileParser::uriKey().'/store/content', [
+        'attachment' => UploadedFile::fake()->image('avatar.jpg'),
+    ])->assertStatus(200);
+
+    expect($response->content())->toBeString();
+
+    // The original file was a jpg but inside the parser I replaced the name to
+    // ends with png
+    expect($response->content())->toEndWith('.png');
+});
+
+it('uses a custom parser that replaces the file', function () {
+    Nova::resources([ExampleResourceThatReplacesTheFile::class]);
+
+    Storage::fake('public');
+
+    $response = $this->postJson('/ardenthq/nova-enhanced-markdown/'.ExampleResourceThatReplacesTheFile::uriKey().'/store/content', [
         'attachment' => UploadedFile::fake()->image('avatar.jpg'),
     ])->assertStatus(200);
 
