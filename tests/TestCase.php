@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Tests;
 
+use Ardenthq\EnhancedMarkdown\FieldServiceProvider;
 use Illuminate\Database\Schema\Blueprint;
+use Laravel\Nova\Nova;
 use Orchestra\Testbench\TestCase as Orchestra;
+use Tests\fixtures\ExampleResource;
 
 abstract class TestCase extends Orchestra
 {
@@ -14,6 +17,8 @@ abstract class TestCase extends Orchestra
         parent::setUp();
 
         $this->setUpDatabase($this->app);
+
+        $this->bootServideProvider($this->app);
     }
 
     /**
@@ -34,24 +39,18 @@ abstract class TestCase extends Orchestra
      */
     protected function setUpDatabase($app)
     {
-        $app['db']->connection()->getSchemaBuilder()->create('nova_pending_trix_attachments', function (Blueprint $table) {
+        $app['db']->connection()->getSchemaBuilder()->create('example_model', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('draft_id')->index();
-            $table->string('attachment');
-            $table->string('disk');
+            $table->string('content');
             $table->timestamps();
         });
+    }
 
-        $app['db']->connection()->getSchemaBuilder()->create('nova_trix_attachments', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('attachable_type');
-            $table->unsignedInteger('attachable_id');
-            $table->string('attachment');
-            $table->string('disk');
-            $table->string('url')->index();
-            $table->timestamps();
-
-            $table->index(['attachable_type', 'attachable_id']);
-        });
+    /**
+     * @param \Illuminate\Foundation\Application $app
+     */
+    protected function bootServideProvider($app)
+    {
+        (new FieldServiceProvider($app))->boot();
     }
 }

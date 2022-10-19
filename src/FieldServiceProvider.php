@@ -35,7 +35,8 @@ class FieldServiceProvider extends ServiceProvider
      */
     protected function routes()
     {
-        Route::middleware('nova')
+        Route::domain(config('nova.domain', null))
+            ->middleware(config('nova.middleware', []))
             ->prefix('ardenthq/nova-enhanced-markdown')
             ->group(__DIR__.'/../routes/api.php');
     }
