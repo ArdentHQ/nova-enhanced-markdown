@@ -80,6 +80,13 @@ EnhancedMarkdown::make('Content', 'content')
     });
 ```
 
+4. The files are stored by default with `/` as a path and using `public` storage disk. You can change the path and the storage disk with the `disk` and `path` methods:
+
+```php
+EnhancedMarkdown::make('Content', 'content')
+    ->disk('s3')
+    ->path('articles')
+```
 ## Development
 
 1. Run `yarn nova:install` and `yarn install` to install all the necessary dependencies for compiling the view components.
