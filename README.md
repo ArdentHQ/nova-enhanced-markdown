@@ -28,8 +28,6 @@ composer require ardenthq/nova-enhanced-markdown
 
 1. Add the `EnhancedMarkdown` field to your Nova Resource.
 
-Ensure to call the `withFiles` method if you want to accept image uploads.
-
 ```php
 <?php
 namespace App\Nova;
@@ -45,7 +43,7 @@ final class ResourceName extends Resource
     {
         return [
             // ....
-            EnhancedMarkdown::make('body')->hideFromIndex(),
+            EnhancedMarkdown::make('body'),
             // ...
         ];
     }
@@ -53,7 +51,7 @@ final class ResourceName extends Resource
 }
 ```
 
-2. By default, this package only validates the attachment as an actual file. If you require more rules (let's say that you only want to accept images), define the rules with the `attachmentRules` method.
+1. By default, this package only validates the attachment as an actual file. If you require more rules (let's say that you only want to accept images), define the rules with the `attachmentRules` method.
 
 ```php
 EnhancedMarkdown::make('Content', 'content')
