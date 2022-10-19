@@ -6,9 +6,7 @@ namespace Tests;
 
 use Ardenthq\EnhancedMarkdown\FieldServiceProvider;
 use Illuminate\Database\Schema\Blueprint;
-use Laravel\Nova\Nova;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Tests\fixtures\ExampleResource;
 
 abstract class TestCase extends Orchestra
 {

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Tests\fixtures\ExampleResource;
 use Laravel\Nova\Nova;
+use Tests\fixtures\ExampleResource;
 use Tests\fixtures\ExampleResourceWithAttachmentRules;
 use Tests\fixtures\ExampleResourceWithCustomFileParser;
 
@@ -14,7 +14,7 @@ it('stores the attachment', function () {
 
     Storage::fake('public');
 
-    $response = $this->postJson('/ardenthq/nova-enhanced-markdown/' . ExampleResource::uriKey() . '/store/content', [
+    $response = $this->postJson('/ardenthq/nova-enhanced-markdown/'.ExampleResource::uriKey().'/store/content', [
         'attachment' => UploadedFile::fake()->image('avatar.jpg'),
     ])->assertStatus(200);
 
@@ -28,12 +28,12 @@ it('validates a file for the attachment', function () {
 
     Storage::fake('public');
 
-    $response = $this->postJson('/ardenthq/nova-enhanced-markdown/' . ExampleResource::uriKey() . '/store/content', [
+    $response = $this->postJson('/ardenthq/nova-enhanced-markdown/'.ExampleResource::uriKey().'/store/content', [
         'attachment' => 'a raw text',
     ])->assertUnprocessable();
 
     $response->assertJsonValidationErrors([
-        'attachment' => ['The attachment must be a file.']
+        'attachment' => ['The attachment must be a file.'],
     ]);
 });
 
@@ -42,7 +42,7 @@ it('validates the attachment using the attachment rules', function () {
 
     Storage::fake('public');
 
-    $response = $this->postJson('/ardenthq/nova-enhanced-markdown/' . ExampleResourceWithAttachmentRules::uriKey() . '/store/content', [
+    $response = $this->postJson('/ardenthq/nova-enhanced-markdown/'.ExampleResourceWithAttachmentRules::uriKey().'/store/content', [
         'attachment' => UploadedFile::fake()->image(name: 'avatar.png', width: 10, height: 10),
     ])->assertUnprocessable();
 
@@ -50,7 +50,7 @@ it('validates the attachment using the attachment rules', function () {
         'attachment' => [
             'The attachment has invalid image dimensions.',
             'The attachment must be a file of type: jpg.',
-        ]
+        ],
     ]);
 });
 
@@ -59,7 +59,7 @@ it('uses a custom parser for the files', function () {
 
     Storage::fake('public');
 
-    $response = $this->postJson('/ardenthq/nova-enhanced-markdown/' . ExampleResourceWithCustomFileParser::uriKey() . '/store/content', [
+    $response = $this->postJson('/ardenthq/nova-enhanced-markdown/'.ExampleResourceWithCustomFileParser::uriKey().'/store/content', [
         'attachment' => UploadedFile::fake()->image('avatar.jpg'),
     ])->assertStatus(200);
 
@@ -67,7 +67,7 @@ it('uses a custom parser for the files', function () {
 
     // The original file was a jpg but inside the parser I replaced the name to
     // ends with png
-    expect($response->content())->toEndWith('.png');;
+    expect($response->content())->toEndWith('.png');
 });
 
 it('returns not found status if resource does not exist', function () {
@@ -81,7 +81,7 @@ it('returns not found status if field does not exist', function () {
 
     Storage::fake('public');
 
-    $this->postJson('/ardenthq/nova-enhanced-markdown/' . ExampleResource::uriKey() . '/store/a-field-that-does-not-exist', [
+    $this->postJson('/ardenthq/nova-enhanced-markdown/'.ExampleResource::uriKey().'/store/a-field-that-does-not-exist', [
         'attachment' => UploadedFile::fake()->image('avatar.jpg'),
     ])->assertNotFound();
 });

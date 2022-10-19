@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\fixtures;
 
-use Laravel\Nova\Resource;
+use Ardenthq\EnhancedMarkdown\EnhancedMarkdown;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Ardenthq\EnhancedMarkdown\EnhancedMarkdown;
+use Laravel\Nova\Resource;
 
 final class ExampleResource extends Resource
 {
@@ -17,7 +17,6 @@ final class ExampleResource extends Resource
      * @var string
      */
     public static $model = ExampleModel::class;
-
 
     public function fields(NovaRequest $request): array
     {

@@ -44,7 +44,8 @@ it('generate previews', function () {
 it('accepts a callback for parsing uploaded files', function () {
     $field = new EnhancedMarkdown('content');
 
-    $fn = function (EnhancedMarkdown $field, UploadedFile $file) {};
+    $fn = function (EnhancedMarkdown $field, UploadedFile $file) {
+    };
 
     $field->parseFile($fn);
 

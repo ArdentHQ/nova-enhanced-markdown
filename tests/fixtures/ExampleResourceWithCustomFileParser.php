@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\fixtures;
 
-use Laravel\Nova\Resource;
-use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Http\Requests\NovaRequest;
 use Ardenthq\EnhancedMarkdown\EnhancedMarkdown;
 use Illuminate\Http\UploadedFile;
+use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Resource;
 
 final class ExampleResourceWithCustomFileParser extends Resource
 {
@@ -18,7 +18,6 @@ final class ExampleResourceWithCustomFileParser extends Resource
      * @var string
      */
     public static $model = ExampleModel::class;
-
 
     public function fields(NovaRequest $request): array
     {
