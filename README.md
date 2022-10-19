@@ -51,7 +51,7 @@ final class ResourceName extends Resource
 }
 ```
 
-1. By default, this package only validates the attachment as an actual file. If you require more rules (let's say that you only want to accept images), define the rules with the `attachmentRules` method.
+2. By default, this package only validates the attachment as an actual file. If you require more rules (let's say that you only want to accept images), define the rules with the `attachmentRules` method.
 
 ```php
 EnhancedMarkdown::make('Content', 'content')
