@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use Tests\fixtures\ExampleResource;
 use Laravel\Nova\Nova;
 use Tests\fixtures\ExampleResourceWithAttachmentRules;
+use Tests\fixtures\ExampleResourceWithCustomFileParser;
 
 it('stores the attachment', function () {
     Nova::resources([ExampleResource::class]);
@@ -51,6 +52,22 @@ it('validates the attachment using the attachment rules', function () {
             'The attachment must be a file of type: jpg.',
         ]
     ]);
+});
+
+it('uses a custom parser for the files', function () {
+    Nova::resources([ExampleResourceWithCustomFileParser::class]);
+
+    Storage::fake('public');
+
+    $response = $this->postJson('/ardenthq/nova-enhanced-markdown/' . ExampleResourceWithCustomFileParser::uriKey() . '/store/content', [
+        'attachment' => UploadedFile::fake()->image('avatar.jpg'),
+    ])->assertStatus(200);
+
+    expect($response->content())->toBeString();
+
+    // The original file was a jpg but inside the parser I replaced the name to
+    // ends with png
+    expect($response->content())->toEndWith('.png');;
 });
 
 it('returns not found status if resource does not exist', function () {
