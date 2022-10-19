@@ -71,8 +71,7 @@ EnhancedMarkdown::make('Content', 'content')
 
 If needed, you can also return a new instance of the file, that instance is the one that is going to be stored.
 
-You need to return an instance of `Illuminate\Http\UploadedFile`, `Illuminate\Http\File` or a valid file as `string`.
-return 
+Important: You need to return an instance of `Illuminate\Http\UploadedFile`, `Illuminate\Http\File` or a `string`. 
 
 ```php
 EnhancedMarkdown::make('Content', 'content')
