@@ -51,7 +51,7 @@ final class ResourceName extends Resource
 }
 ```
 
-2. By default, this package only validates the attachment as an actual file. If you require more rules (let's say that you only want to accept images), define the rules with the `attachmentRules` method.
+2. By default, this package only validates the attachment as an actual file. If you require more rules (let's say that you only want to accept images), define the rules with the new `attachmentRules` method.
 
 ```php
 EnhancedMarkdown::make('Content', 'content')
@@ -87,6 +87,7 @@ EnhancedMarkdown::make('Content', 'content')
     ->disk('s3')
     ->path('articles')
 ```
+
 ## Development
 
 1. Run `yarn nova:install` and `yarn install` to install all the necessary dependencies for compiling the view components.
