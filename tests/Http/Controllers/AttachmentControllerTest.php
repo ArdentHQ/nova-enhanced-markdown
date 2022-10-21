@@ -66,8 +66,8 @@ it('uses a custom parser for the files', function () {
 
     expect($response->content())->toBeString();
 
-    // The original file was a jpg but inside the parser I replaced the name to
-    // ends with png
+    // The original file was a .jpg, but inside the parser the name was replaced
+    // to end in .png
     expect($response->content())->toEndWith('.png');
 });
 
@@ -82,8 +82,8 @@ it('uses a custom parser that replaces the file', function () {
 
     expect($response->content())->toBeString();
 
-    // The original file was a jpg but inside the parser I replaced the name to
-    // ends with png
+    // The original file was a .jpg, but inside the parser the name was replaced
+    // to end in .png
     expect($response->content())->toEndWith('.png');
 });
 

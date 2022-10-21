@@ -40,9 +40,9 @@ class StoreAttachment
         $file = $request->file('attachment');
 
         if (is_callable($this->field->fileParserCallback)) {
-            // Some parses like the ones the spatie media library used doesnt
-            // affect the original instance so we dont neccesary need to return
-            // anything in some other cases the user may want to return an updated
+            // Some parses, like the ones the spatie media library used, doesnt
+            // affect the original instance, so we dont neccesary need to return
+            // anything. In some other cases the user may want to return an updated
             // instance of the file that is going to be stored.
             $result = call_user_func(
                 $this->field->fileParserCallback,
@@ -50,7 +50,7 @@ class StoreAttachment
                 $file
             );
 
-            // We only replace the file if the parser callaback returned a file
+            // We only replace the file if the parser callback returned a file
             // that can be stored with the storage disk.
             if ($this->isStorable($result)) {
                 $file = $result;
