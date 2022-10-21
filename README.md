@@ -26,46 +26,7 @@ composer require ardenthq/nova-enhanced-markdown
 ```
 ## Use
 
-> **Note**
-> This package reuses part of the logic used on the `Laravel\Nova\Fields\Trix` Field to store and handle files. This means we need to follow some steps related to file handling [mentioned on the Laravel Nova docs](https://nova.laravel.com/docs/1.0/resources/fields.html#file-uploads) related to adding the migrations and pruning the files.
-
-1. Define two database tables to store pending and persisted Trix uploads. To do so, create a migration with the following table definitions:
-
-```php
-Schema::create('nova_pending_trix_attachments', function (Blueprint $table) {
-    $table->increments('id');
-    $table->string('draft_id')->index();
-    $table->string('attachment');
-    $table->string('disk');
-    $table->timestamps();
-});
-
-Schema::create('nova_trix_attachments', function (Blueprint $table) {
-    $table->increments('id');
-    $table->string('attachable_type');
-    $table->unsignedInteger('attachable_id');
-    $table->string('attachment');
-    $table->string('disk');
-    $table->string('url')->index();
-    $table->timestamps();
-
-    $table->index(['attachable_type', 'attachable_id']);
-});
-```
-
-2. In your `app/Console/Kernel.php` file, you should register a daily job to prune any stale attachments from the pending attachments table and storage. Laravel Nova provides the job implementation needed to accomplish this:
-
-```php
-use Laravel\Nova\Trix\PruneStaleAttachments;
-
-$schedule->call(function () {
-    (new PruneStaleAttachments)();
-})->daily();
-```
-
-3. Add the `EnhancedMarkdown` field to your Nova Resource.
-
-Ensure to call the `withFiles` method if you want to accept image uploads.
+1. Add the `EnhancedMarkdown` field to your Nova Resource.
 
 ```php
 <?php
@@ -82,15 +43,49 @@ final class ResourceName extends Resource
     {
         return [
             // ....
-            EnhancedMarkdown::make('Body')
-                ->withFiles('public')
-                ->rules('required', 'string')
-                ->hideFromIndex(),
+            EnhancedMarkdown::make('body'),
             // ...
         ];
     }
     // ...
 }
+```
+
+2. By default, this package only validates the attachment as an actual file. If you require more rules (let's say that you only want to accept images), define the rules with the new `attachmentRules` method.
+
+```php
+EnhancedMarkdown::make('Content', 'content')
+    ->attachmentRules('dimensions:min_width=20,min_height:20', 'image'),
+```
+
+3. In some cases, you may want to parse the file before storing it (for example, apply some optimizations). To do that, you can add a callback by using the `parseFile` method.
+
+```php
+EnhancedMarkdown::make('Content', 'content')
+    ->parseFile(function (EnhancedMarkdown $field, UploadedFile $file) {
+        $image = \Spatie\Image\Image::load($file->getPathname());
+        $image->fit(\Spatie\Image\Manipulations::FIT_MAX, 100, 100);
+        $image->save();
+    });
+```
+
+If needed, you can also return a new instance of the file, that instance is the one that is going to be stored.
+
+Important: You need to return an instance of `Illuminate\Http\UploadedFile`, `Illuminate\Http\File` or a `string`. 
+
+```php
+EnhancedMarkdown::make('Content', 'content')
+    ->parseFile(function (EnhancedMarkdown $field, UploadedFile $file) {
+        return new File('some/path');
+    });
+```
+
+4. The files are stored by default with `/` as a path and using `public` storage disk. You can change the path and the storage disk with the `disk` and `path` methods:
+
+```php
+EnhancedMarkdown::make('Content', 'content')
+    ->disk('s3')
+    ->path('articles')
 ```
 
 ## Development

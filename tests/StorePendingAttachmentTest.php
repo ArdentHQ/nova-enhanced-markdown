@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Ardenthq\EnhancedMarkdown\EnhancedMarkdown;
-use Ardenthq\EnhancedMarkdown\StorePendingAttachment;
+use Ardenthq\EnhancedMarkdown\StoreAttachment;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -31,9 +31,7 @@ it('stores the image and returns the path', function () {
 
     $field = new EnhancedMarkdown('content');
 
-    $field->withFiles('public');
-
-    $job = new StorePendingAttachment($field);
+    $job = new StoreAttachment($field);
 
     $image = UploadedFile::fake()->image('image.png');
 
@@ -54,9 +52,7 @@ it('stores a gif image and returns the path', function () {
 
     $field = new EnhancedMarkdown('content');
 
-    $field->withFiles('public');
-
-    $job = new StorePendingAttachment($field);
+    $job = new StoreAttachment($field);
 
     $image = UploadedFile::fake()->image('image.gif');
 
@@ -64,7 +60,6 @@ it('stores a gif image and returns the path', function () {
 
     $request = app('request')->merge([
         'attachment' => $image,
-        'draftId'    => '123',
     ]);
 
     $response = $job->__invoke($request);

@@ -4,5 +4,7 @@ parameters:
     level: 8
     ignoreErrors:
         - '#Call to an undefined static method ([\w\\\:_\(\)]+)::create\(\)#'
+        - '#TValidationRules#'
     checkMissingIterableValueType: false
     reportUnmatchedIgnoredErrors: false
+    checkGenericClassInNonGenericObjectType: false

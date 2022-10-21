@@ -4,18 +4,23 @@ declare(strict_types=1);
 
 namespace Ardenthq\EnhancedMarkdown;
 
-use Laravel\Nova\Contracts\Previewable;
-use Laravel\Nova\Fields\Markdown\CommonMarkPreset;
-use Laravel\Nova\Fields\Markdown\DefaultPreset;
-use Laravel\Nova\Fields\Markdown\MarkdownPreset;
-use Laravel\Nova\Fields\Markdown\ZeroPreset;
-use Laravel\Nova\Fields\Trix;
-use Laravel\Nova\Trix\DeleteAttachments;
-use Laravel\Nova\Trix\DetachAttachment;
-use Laravel\Nova\Trix\DiscardPendingAttachments;
+use Illuminate\Contracts\Validation\InvokableRule;
+use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Http\UploadedFile;
+use Laravel\Nova\Contracts\Storable as StorableContract;
+use Laravel\Nova\Fields\Markdown;
+use Laravel\Nova\Fields\Storable;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
-class EnhancedMarkdown extends Trix implements Previewable
+/**
+ * @template TValidationRules of array<int, (\Stringable | string | Rule | InvokableRule | callable)>|\Stringable|string|callable(string, mixed, \Closure):void
+ *
+ * @method static static make(mixed $name, string|\Closure|callable|object|null $attribute = null, callable|null $resolveCallback = null)
+ */
+class EnhancedMarkdown extends Markdown implements StorableContract
 {
+    use Storable;
+
     /**
      * The field's component.
      *
@@ -24,101 +29,94 @@ class EnhancedMarkdown extends Trix implements Previewable
     public $component = 'enhanced-markdown';
 
     /**
-     * Indicates if the element should be shown on the index view.
+     * The callback that should be executed to store file attachments.
      *
-     * @var bool
+     * @var callable
      */
-    public $showOnIndex = false;
+    public $attachCallback;
 
     /**
-     * Indicates the preset the field should use.
+     * The callback that should be executed to store file attachments.
      *
-     * @var string|array<string, mixed>
+     * @var callable(\Ardenthq\EnhancedMarkdown\EnhancedMarkdown, UploadedFile):void|null
      */
-    public $preset = 'default';
+    public $fileParserCallback = null;
 
     /**
-     * The built-in presets for the Markdown field.
+     * The validation rules for file attachments.
      *
-     * @var string[]
+     * @var TValidationRules
      */
-    public $presets = [
-        'default'    => DefaultPreset::class,
-        'commonmark' => CommonMarkPreset::class,
-        'zero'       => ZeroPreset::class,
-    ];
+    public $attachmentRules = [];
 
     /**
-     * Define the preset the field should use. Can be "commonmark", "zero", and "default".
+     * Create a new field.
      *
-     * @param  string|array<string, mixed>  $preset
+     * @param  string  $name
+     * @param  string|\Closure|callable|object|null  $attribute
+     * @param  (callable(mixed, mixed, ?string):mixed)|null  $resolveCallback
+     * @return void
+     */
+    public function __construct($name, $attribute = null, callable $resolveCallback = null)
+    {
+        parent::__construct($name, $attribute, $resolveCallback);
+
+        $this->attach(new StoreAttachment($this));
+
+        $this->disk('public');
+    }
+
+    /**
+     * Specify the callback that should be used to store file attachments.
+     *
      * @return $this
      */
-    public function preset(string|array $preset)
+    public function attach(callable $callback)
     {
-        $this->preset = $preset;
+        $this->attachCallback = $callback;
 
         return $this;
     }
 
     /**
-     * Specify that file uploads should be allowed.
+     * Specify the callback that should be used to store file attachments.
      *
-     * @param  string  $disk
-     * @param  string  $path
      * @return $this
      */
-    public function withFiles($disk = 'public', $path = '/')
+    public function parseFile(callable|null $callback)
     {
-        $this->withFiles = true;
-
-        $this->disk($disk)->path($path);
-
-        $this->attach(new StorePendingAttachment($this))
-             ->detach(new DetachAttachment())
-             ->delete(new DeleteAttachments($this))
-             ->discard(new DiscardPendingAttachments())
-             ->prunable();
+        $this->fileParserCallback = $callback;
 
         return $this;
     }
 
     /**
-     * Return a preview for the given field value.
+     * Set the validation rules for the file.
      *
-     * @param  string  $value
-     * @return string
+     * @param callable(NovaRequest):TValidationRules|TValidationRules ...$attachmentRules
+     * @return $this
      */
-    public function previewFor($value)
+    public function attachmentRules($attachmentRules)
     {
-        return $this->renderer()->convert($value);
+        $parameters = func_get_args();
+
+        $this->attachmentRules = (
+            $attachmentRules instanceof Rule ||
+            $attachmentRules instanceof InvokableRule ||
+            is_string($attachmentRules) ||
+            count($parameters) > 1
+        ) ? $parameters : $attachmentRules;
+
+        return $this;
     }
 
     /**
-     * @return MarkdownPreset
-     */
-    public function renderer()
-    {
-        /** @var string $preset */
-        $preset = $this->preset;
-
-        /** @var MarkdownPreset $renderer */
-        $renderer = new $this->presets[$preset]();
-
-        return $renderer;
-    }
-
-    /**
-     * Prepare the element for JSON serialization.
+     * Get the validation rules for this field.
      *
-     * @return array<string, mixed>
+     * @return TValidationRules
      */
-    public function jsonSerialize(): array
+    public function getAttachmentRules(NovaRequest $request)
     {
-        return array_merge(parent::jsonSerialize(), [
-            'shouldShow' => $this->shouldBeExpanded(),
-            'preset'     => $this->preset,
-            'previewFor' => $this->previewFor($this->value ?? ''),
-        ]);
+        return is_callable($this->attachmentRules) ? call_user_func($this->attachmentRules, $request) : $this->attachmentRules;
     }
 }

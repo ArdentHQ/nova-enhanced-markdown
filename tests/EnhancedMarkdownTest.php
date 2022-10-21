@@ -3,10 +3,9 @@
 declare(strict_types=1);
 
 use Ardenthq\EnhancedMarkdown\EnhancedMarkdown;
-use Ardenthq\EnhancedMarkdown\StorePendingAttachment;
-use Laravel\Nova\Trix\DeleteAttachments;
-use Laravel\Nova\Trix\DetachAttachment;
-use Laravel\Nova\Trix\DiscardPendingAttachments;
+use Ardenthq\EnhancedMarkdown\StoreAttachment;
+use Illuminate\Http\UploadedFile;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
 it('creates an instance', function () {
     $field = new EnhancedMarkdown('content');
@@ -23,15 +22,7 @@ it('creates an instance', function () {
 it('accepts files', function () {
     $field = new EnhancedMarkdown('content');
 
-    $field->withFiles('disk-name', 'custom-path');
-
-    expect($field->withFiles)->toBeTrue();
-    expect($field->prunable)->toBeTrue();
-
-    expect($field->attachCallback)->toBeInstanceOf(StorePendingAttachment::class);
-    expect($field->detachCallback)->toBeInstanceOf(DetachAttachment::class);
-    expect($field->deleteCallback)->toBeInstanceOf(DeleteAttachments::class);
-    expect($field->discardCallback)->toBeInstanceOf(DiscardPendingAttachments::class);
+    expect($field->attachCallback)->toBeInstanceOf(StoreAttachment::class);
 });
 
 it('accepts a preset', function () {
@@ -48,4 +39,31 @@ it('generate previews', function () {
     $field = new EnhancedMarkdown('content');
 
     expect($field->previewFor('**markdown**'))->toContain('<p><strong>markdown</strong></p>');
+});
+
+it('accepts a callback for parsing uploaded files', function () {
+    $field = new EnhancedMarkdown('content');
+
+    $fn = function (EnhancedMarkdown $field, UploadedFile $file) {
+    };
+
+    $field->parseFile($fn);
+
+    expect($field->fileParserCallback)->toBe($fn);
+});
+
+it('accepts rules for the attachments', function () {
+    $field = new EnhancedMarkdown('content');
+
+    $field->attachmentRules([
+        'required',
+        'max:1024',
+        'image',
+    ]);
+
+    expect($field->getAttachmentRules(new NovaRequest()))->toEqual([
+        'required',
+        'max:1024',
+        'image',
+    ]);
 });
