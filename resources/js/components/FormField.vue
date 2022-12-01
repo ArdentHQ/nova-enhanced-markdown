@@ -194,3 +194,17 @@ function uuidv4() {
     );
 }
 </script>
+
+<style>
+.markdown-fullscreen {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+}
+
+.markdown-fullscreen > div {
+    flex: 1;
+    overflow: auto;
+}
+</style>
