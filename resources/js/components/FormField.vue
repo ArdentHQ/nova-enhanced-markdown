@@ -4,7 +4,7 @@ require("@/../../node_modules/codemirror/mode/markdown/markdown.js");
 import MarkdownField from "@/fields/Form/MarkdownField.vue";
 import { FormField } from "@/mixins";
 import Toasted from "toastedjs";
-
+import { enableBodyScroll, disableBodyScroll } from "body-scroll-lock";
 export default {
     extends: MarkdownField,
 
@@ -63,6 +63,16 @@ export default {
                 );
             },
         }),
+    },
+    watch: {
+        fullScreen(isFullScreen) {
+            const scrollable = this.$el.querySelector(".CodeMirror-scroll");
+            if (isFullScreen) {
+                disableBodyScroll(scrollable);
+            } else {
+                enableBodyScroll(scrollable);
+            }
+        },
     },
     methods: {
         fill(formData) {
