@@ -25,6 +25,7 @@ class FieldServiceProvider extends ServiceProvider
 
         Nova::serving(static function (ServingNova $event) {
             Nova::script('enhanced-markdown', __DIR__.'/../dist/js/field.js');
+            Nova::style('enhanced-markdown', __DIR__.'/../dist/css/field.css');
         });
     }
 
