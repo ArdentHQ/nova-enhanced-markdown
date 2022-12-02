@@ -247,11 +247,14 @@ function uuidv4() {
     height: 100vh;
     display: flex;
     flex-direction: column;
-    overflow: auto;
+    overflow: hidden;
 }
-
 .markdown-fullscreen > div {
     flex: 1;
-    overflow: auto;
+    overflow: hidden;
+    padding: 0;
+}
+.markdown-fullscreen .CodeMirror-wrap {
+    padding: 1rem;
 }
 </style>
