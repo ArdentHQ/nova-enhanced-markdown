@@ -4,8 +4,21 @@ require("@/../../node_modules/codemirror/mode/markdown/markdown.js");
 import MarkdownField from "@/fields/Form/MarkdownField.vue";
 import { FormField } from "@/mixins";
 import Toasted from "toastedjs";
+import IconUpload from "./IconUpload.vue";
+
+const tools = MarkdownField.computed.tools();
+const uploadImageTool = {
+    name: "upload",
+    action: "upload",
+    className: "fa fa-upload",
+    icon: "icon-upload",
+};
+tools.splice(4, 0, uploadImageTool);
 
 export default {
+    components: {
+        IconUpload,
+    },
     extends: MarkdownField,
 
     mixins: [FormField],
@@ -20,6 +33,7 @@ export default {
         }),
     }),
     computed: {
+        tools: () => tools,
         actions: () => ({
             ...MarkdownField.computed.actions(),
 
@@ -61,6 +75,12 @@ export default {
                         ch: cursor.ch - 1,
                     }
                 );
+            },
+
+            upload() {
+                if (!this.isEditable) return;
+
+                this.$el.querySelector(".upload_input").click();
             },
         }),
     },
@@ -169,7 +189,6 @@ export default {
                     replacePlaceholder(textSelection);
                 });
         },
-
         insertAround(start, end) {
             if (this.doc().somethingSelected()) {
                 MarkdownField.methods.insertAround.call(this, start, end);
@@ -177,11 +196,28 @@ export default {
                 this.doc().replaceSelection(start + end);
             }
         },
+        initFileupload() {
+            const input = this.$el.querySelector(".upload_input");
+
+            input.addEventListener("click", (event) => {
+                event.stopPropagation();
+            });
+
+            input.addEventListener("change", (event) => {
+                const { files } = event.target;
+
+                this.handleFiles(this.codemirror, files);
+
+                input.value = "";
+            });
+        },
     },
     mounted() {
         this.codemirror.on("drop", this.dropHandler);
 
         this.codemirror.on("paste", this.pasteHandler);
+
+        this.initFileupload();
     },
 };
 
