@@ -4,6 +4,7 @@ require("@/../../node_modules/codemirror/mode/markdown/markdown.js");
 import MarkdownField from "@/fields/Form/MarkdownField.vue";
 import { FormField } from "@/mixins";
 import Toasted from "toastedjs";
+import { enableBodyScroll, disableBodyScroll } from "body-scroll-lock";
 import IconUpload from "./IconUpload.vue";
 
 const tools = MarkdownField.computed.tools();
@@ -83,6 +84,16 @@ export default {
                 this.$el.querySelector(".upload_input").click();
             },
         }),
+    },
+    watch: {
+        fullScreen(isFullScreen) {
+            const scrollable = this.$el.querySelector(".CodeMirror-scroll");
+            if (isFullScreen) {
+                disableBodyScroll(scrollable);
+            } else {
+                enableBodyScroll(scrollable);
+            }
+        },
     },
     methods: {
         fill(formData) {
@@ -230,3 +241,20 @@ function uuidv4() {
     );
 }
 </script>
+
+<style>
+.markdown-fullscreen {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+.markdown-fullscreen > div {
+    flex: 1;
+    overflow: hidden;
+    padding: 0;
+}
+.markdown-fullscreen .CodeMirror-wrap {
+    padding: 1rem;
+}
+</style>
