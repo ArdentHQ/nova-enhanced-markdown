@@ -12,12 +12,12 @@
     "require": {
         "php": "^8.0",
         "laravel/framework": "^9.0|^10.0",
-        "laravel/nova": "~4.19.3",
         "spatie/image": "^2.2",
         "spatie/image-optimizer": "^1.6"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.11",
+        "laravel/nova": "~4.19.3",
         "orchestra/testbench": "^7.9",
         "pestphp/pest": "^1.22",
         "phpstan/phpstan": "^1.8",
