@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "63371858f39379981d922d3fc8645e06",
+    "content-hash": "86527bf57cc9116316b0d61c0d07159f",
     "packages": [
         {
             "name": "brick/math",
@@ -6418,17 +6418,17 @@
         },
         {
             "name": "laravel/nova",
-            "version": "4.19.6",
+            "version": "4.21.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:laravel/nova.git",
-                "reference": "63c89dcf701a0345b03d4be2a504ed1d74127b2f"
+                "reference": "a02591557c74539ef5e4f0f7978e15c5203d001c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://nova.laravel.com/dist/laravel/nova/laravel-nova-63c89dcf701a0345b03d4be2a504ed1d74127b2f-zip-ffac32.zip",
-                "reference": "63c89dcf701a0345b03d4be2a504ed1d74127b2f",
-                "shasum": "88876041ffb75e15003f0b97f67cc6a4025bb6e2"
+                "url": "https://nova.laravel.com/dist/laravel/nova/laravel-nova-a02591557c74539ef5e4f0f7978e15c5203d001c-zip-9d0312.zip",
+                "reference": "a02591557c74539ef5e4f0f7978e15c5203d001c",
+                "shasum": "8bd61338117a5b86bd4c703bfd335096a6923bcc"
             },
             "require": {
                 "brick/money": "^0.5.0|^0.6.0|^0.7.0",
@@ -6447,7 +6447,7 @@
                 "symfony/process": "^5.4|^6.0"
             },
             "require-dev": {
-                "laravel/nova-dusk-suite": "dev-fixes-5194",
+                "laravel/nova-dusk-suite": "8.4.x-dev|9.4.x-dev",
                 "laravel/pint": "^1.0",
                 "laravel/scout": "^9.4",
                 "mockery/mockery": "^1.4.4",
@@ -6523,9 +6523,9 @@
                 "laravel"
             ],
             "support": {
-                "source": "https://github.com/laravel/nova/tree/v4.19.6"
+                "source": "https://github.com/laravel/nova/tree/v4.21.0"
             },
-            "time": "2023-01-03T18:14:28+00:00"
+            "time": "2023-01-17T18:38:30+00:00"
         },
         {
             "name": "laravel/tinker",
