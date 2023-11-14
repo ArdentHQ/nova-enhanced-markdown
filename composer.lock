@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a2cdd01bc8a091fc90e24ea6a545c2b4",
+    "content-hash": "310a21ccc1597ebef415124c6edae0c4",
     "packages": [
         {
             "name": "brick/math",
@@ -63,22 +63,22 @@
         },
         {
             "name": "brick/money",
-            "version": "0.8.1",
+            "version": "0.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/brick/money.git",
-                "reference": "25f484a347756b7f3fbe7ad63ed9ad2d87b20004"
+                "reference": "933b375c4cd31c9b5c34b2c8eaaafa2d43ea8f45"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/brick/money/zipball/25f484a347756b7f3fbe7ad63ed9ad2d87b20004",
-                "reference": "25f484a347756b7f3fbe7ad63ed9ad2d87b20004",
+                "url": "https://api.github.com/repos/brick/money/zipball/933b375c4cd31c9b5c34b2c8eaaafa2d43ea8f45",
+                "reference": "933b375c4cd31c9b5c34b2c8eaaafa2d43ea8f45",
                 "shasum": ""
             },
             "require": {
                 "brick/math": "~0.10.1 || ~0.11.0",
                 "ext-json": "*",
-                "php": "^8.0"
+                "php": "^7.4 || ^8.0"
             },
             "require-dev": {
                 "brick/varexporter": "~0.3.0",
@@ -86,7 +86,7 @@
                 "ext-pdo": "*",
                 "php-coveralls/php-coveralls": "^2.2",
                 "phpunit/phpunit": "^9.4.3",
-                "vimeo/psalm": "5.14.1"
+                "vimeo/psalm": "5.4.0"
             },
             "suggest": {
                 "ext-intl": "Required to format Money objects"
@@ -109,7 +109,7 @@
             ],
             "support": {
                 "issues": "https://github.com/brick/money/issues",
-                "source": "https://github.com/brick/money/tree/0.8.1"
+                "source": "https://github.com/brick/money/tree/0.7.1"
             },
             "funding": [
                 {
@@ -117,7 +117,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-09-23T21:17:11+00:00"
+            "time": "2023-01-15T23:31:13+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
@@ -907,24 +907,24 @@
         },
         {
             "name": "graham-campbell/result-type",
-            "version": "v1.1.1",
+            "version": "v1.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/GrahamCampbell/Result-Type.git",
-                "reference": "672eff8cf1d6fe1ef09ca0f89c4b287d6a3eb831"
+                "reference": "fbd48bce38f73f8a4ec8583362e732e4095e5862"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GrahamCampbell/Result-Type/zipball/672eff8cf1d6fe1ef09ca0f89c4b287d6a3eb831",
-                "reference": "672eff8cf1d6fe1ef09ca0f89c4b287d6a3eb831",
+                "url": "https://api.github.com/repos/GrahamCampbell/Result-Type/zipball/fbd48bce38f73f8a4ec8583362e732e4095e5862",
+                "reference": "fbd48bce38f73f8a4ec8583362e732e4095e5862",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.2.5 || ^8.0",
-                "phpoption/phpoption": "^1.9.1"
+                "phpoption/phpoption": "^1.9.2"
             },
             "require-dev": {
-                "phpunit/phpunit": "^8.5.32 || ^9.6.3 || ^10.0.12"
+                "phpunit/phpunit": "^8.5.34 || ^9.6.13 || ^10.4.2"
             },
             "type": "library",
             "autoload": {
@@ -953,7 +953,7 @@
             ],
             "support": {
                 "issues": "https://github.com/GrahamCampbell/Result-Type/issues",
-                "source": "https://github.com/GrahamCampbell/Result-Type/tree/v1.1.1"
+                "source": "https://github.com/GrahamCampbell/Result-Type/tree/v1.1.2"
             },
             "funding": [
                 {
@@ -965,7 +965,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-02-25T20:23:15+00:00"
+            "time": "2023-11-12T22:16:48+00:00"
         },
         {
             "name": "guzzlehttp/psr7",
@@ -1519,23 +1519,23 @@
         },
         {
             "name": "laravel/nova",
-            "version": "4.29.5",
+            "version": "4.19.6",
             "source": {
                 "type": "git",
                 "url": "git@github.com:laravel/nova.git",
-                "reference": "97ed70e97085cb379d135ab357e1098436dcd6ee"
+                "reference": "63c89dcf701a0345b03d4be2a504ed1d74127b2f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://nova.laravel.com/dist/laravel/nova/laravel-nova-97ed70e97085cb379d135ab357e1098436dcd6ee-zip-81a05c.zip",
-                "reference": "97ed70e97085cb379d135ab357e1098436dcd6ee",
-                "shasum": "1ac45b3811cc8e8dfa3b1bea1911d82aa44b0826"
+                "url": "https://nova.laravel.com/dist/laravel/nova/laravel-nova-63c89dcf701a0345b03d4be2a504ed1d74127b2f-zip-ffac32.zip",
+                "reference": "63c89dcf701a0345b03d4be2a504ed1d74127b2f",
+                "shasum": "88876041ffb75e15003f0b97f67cc6a4025bb6e2"
             },
             "require": {
-                "brick/money": "^0.5.0|^0.6.0|^0.7.0|^0.8.0",
+                "brick/money": "^0.5.0|^0.6.0|^0.7.0",
                 "doctrine/dbal": "^2.13.3|^3.1.2",
                 "ext-json": "*",
-                "illuminate/support": "^8.83.4|^9.3.1|^10.0",
+                "illuminate/support": "^8.83.4|^9.3.1",
                 "inertiajs/inertia-laravel": "^0.4.5|^0.5.2|^0.6.0",
                 "laravel/ui": "^3.3|^4.0",
                 "nesbot/carbon": "^2.53.1",
@@ -1548,13 +1548,13 @@
                 "symfony/process": "^5.4|^6.0"
             },
             "require-dev": {
-                "laravel/nova-dusk-suite": "8.4.x-dev|9.4.x-dev|10.4.x-dev",
-                "laravel/pint": "^1.6",
-                "laravel/scout": "^9.8|^10.0",
+                "laravel/nova-dusk-suite": "dev-fixes-5194",
+                "laravel/pint": "^1.0",
+                "laravel/scout": "^9.4",
                 "mockery/mockery": "^1.4.4",
-                "nunomaduro/larastan": "^1.0.1|^2.5.1",
-                "orchestra/testbench-dusk": "^6.24|^7.21|^8.0",
-                "phpunit/phpunit": "^9.6|^10.1",
+                "nunomaduro/larastan": "^1.0.1|^2.0",
+                "orchestra/testbench-dusk": "^6.24|^7.0",
+                "phpunit/phpunit": "^9.5.10",
                 "predis/predis": "^1.1.9|^2.0"
             },
             "suggest": {
@@ -1585,43 +1585,28 @@
                 }
             },
             "scripts": {
-                "post-autoload-dump": [
-                    "@clear",
-                    "@php vendor/bin/dusk-updater detect --auto-update --ansi",
-                    "@php vendor/bin/testbench-dusk package:discover --ansi"
-                ],
-                "clear": [
-                    "@php vendor/bin/testbench-dusk package:purge-skeleton --ansi",
-                    "@php vendor/bin/testbench-dusk package:dusk-purge --ansi"
-                ],
                 "dusk:prepare": [
+                    "./vendor/bin/dusk-updater detect --auto-update",
                     "@php -r \"file_exists('phpunit.dusk.xml') || copy('phpunit.dusk.xml.dist', 'phpunit.dusk.xml'); \"",
-                    "@php -r \"if (file_exists('workbench/.env.dusk')) { copy('workbench/.env.dusk', 'vendor/laravel/nova-dusk-suite/.env'); } else { copy('workbench/.env.dusk.example', 'vendor/laravel/nova-dusk-suite/.env'); }\""
+                    "@php -r \"if (file_exists('.env.dusk')) { copy('.env.dusk', 'vendor/laravel/nova-dusk-suite/.env'); } else { copy('.env.dusk.example', 'vendor/laravel/nova-dusk-suite/.env'); }\"",
+                    "./vendor/bin/testbench-dusk package:discover"
                 ],
                 "dusk:dev-assets": [
+                    "npm ci",
                     "TAILWIND_MODE=build npm run dev",
-                    "@php vendor/bin/testbench-dusk nova:publish --force --ansi"
+                    "./vendor/bin/testbench-dusk nova:publish --force"
                 ],
                 "dusk:assets": [
+                    "npm ci",
                     "TAILWIND_MODE=build npm run prod",
-                    "@php vendor/bin/testbench-dusk nova:publish --force --ansi"
+                    "./vendor/bin/testbench-dusk nova:publish --force"
                 ],
                 "dusk:test": [
-                    "@php vendor/bin/testbench-dusk package:dusk-purge --ansi",
-                    "@php vendor/bin/phpunit -c phpunit.dusk.xml --stop-on-failure --stop-on-error"
+                    "./vendor/bin/testbench-dusk package:dusk-purge",
+                    "./vendor/bin/phpunit -c phpunit.dusk.xml"
                 ],
                 "dusk:filter": [
-                    "./vendor/bin/testbench-dusk package:dusk-purge --ansi && ./vendor/bin/phpunit -c phpunit.dusk.xml --filter"
-                ],
-                "test:local": [
-                    "@php vendor/bin/phpunit -c phpunit.xml --group date-field,datetime-field,external-network --testdox",
-                    "@php vendor/bin/phpunit -c phpunit.dusk.xml --group date-field,datetime-field,external-network --testdox"
-                ],
-                "serve": [
-                    "@clear",
-                    "@php vendor/bin/testbench package:discover --ansi",
-                    "@php vendor/bin/testbench workbench:build --ansi",
-                    "@php vendor/bin/testbench serve"
+                    "./vendor/bin/testbench-dusk package:dusk-purge && ./vendor/bin/phpunit -c phpunit.dusk.xml --filter"
                 ]
             },
             "license": [
@@ -1639,22 +1624,22 @@
                 "laravel"
             ],
             "support": {
-                "source": "https://github.com/laravel/nova/tree/v4.29.5"
+                "source": "https://github.com/laravel/nova/tree/v4.19.6"
             },
-            "time": "2023-11-09T15:55:30+00:00"
+            "time": "2023-01-03T18:14:28+00:00"
         },
         {
             "name": "laravel/serializable-closure",
-            "version": "v1.3.2",
+            "version": "v1.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/serializable-closure.git",
-                "reference": "076fe2cf128bd54b4341cdc6d49b95b34e101e4c"
+                "reference": "3dbf8a8e914634c48d389c1234552666b3d43754"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/serializable-closure/zipball/076fe2cf128bd54b4341cdc6d49b95b34e101e4c",
-                "reference": "076fe2cf128bd54b4341cdc6d49b95b34e101e4c",
+                "url": "https://api.github.com/repos/laravel/serializable-closure/zipball/3dbf8a8e914634c48d389c1234552666b3d43754",
+                "reference": "3dbf8a8e914634c48d389c1234552666b3d43754",
                 "shasum": ""
             },
             "require": {
@@ -1701,7 +1686,7 @@
                 "issues": "https://github.com/laravel/serializable-closure/issues",
                 "source": "https://github.com/laravel/serializable-closure"
             },
-            "time": "2023-10-17T13:38:16+00:00"
+            "time": "2023-11-08T14:08:06+00:00"
         },
         {
             "name": "laravel/ui",
@@ -2761,16 +2746,16 @@
         },
         {
             "name": "phpoption/phpoption",
-            "version": "1.9.1",
+            "version": "1.9.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/php-option.git",
-                "reference": "dd3a383e599f49777d8b628dadbb90cae435b87e"
+                "reference": "80735db690fe4fc5c76dfa7f9b770634285fa820"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/php-option/zipball/dd3a383e599f49777d8b628dadbb90cae435b87e",
-                "reference": "dd3a383e599f49777d8b628dadbb90cae435b87e",
+                "url": "https://api.github.com/repos/schmittjoh/php-option/zipball/80735db690fe4fc5c76dfa7f9b770634285fa820",
+                "reference": "80735db690fe4fc5c76dfa7f9b770634285fa820",
                 "shasum": ""
             },
             "require": {
@@ -2778,7 +2763,7 @@
             },
             "require-dev": {
                 "bamarni/composer-bin-plugin": "^1.8.2",
-                "phpunit/phpunit": "^8.5.32 || ^9.6.3 || ^10.0.12"
+                "phpunit/phpunit": "^8.5.34 || ^9.6.13 || ^10.4.2"
             },
             "type": "library",
             "extra": {
@@ -2820,7 +2805,7 @@
             ],
             "support": {
                 "issues": "https://github.com/schmittjoh/php-option/issues",
-                "source": "https://github.com/schmittjoh/php-option/tree/1.9.1"
+                "source": "https://github.com/schmittjoh/php-option/tree/1.9.2"
             },
             "funding": [
                 {
@@ -2832,7 +2817,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-02-25T19:38:58+00:00"
+            "time": "2023-11-12T21:59:55+00:00"
         },
         {
             "name": "psr/cache",
@@ -6178,31 +6163,31 @@
         },
         {
             "name": "vlucas/phpdotenv",
-            "version": "v5.5.0",
+            "version": "v5.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vlucas/phpdotenv.git",
-                "reference": "1a7ea2afc49c3ee6d87061f5a233e3a035d0eae7"
+                "reference": "2cf9fb6054c2bb1d59d1f3817706ecdb9d2934c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/1a7ea2afc49c3ee6d87061f5a233e3a035d0eae7",
-                "reference": "1a7ea2afc49c3ee6d87061f5a233e3a035d0eae7",
+                "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/2cf9fb6054c2bb1d59d1f3817706ecdb9d2934c4",
+                "reference": "2cf9fb6054c2bb1d59d1f3817706ecdb9d2934c4",
                 "shasum": ""
             },
             "require": {
                 "ext-pcre": "*",
-                "graham-campbell/result-type": "^1.0.2",
-                "php": "^7.1.3 || ^8.0",
-                "phpoption/phpoption": "^1.8",
-                "symfony/polyfill-ctype": "^1.23",
-                "symfony/polyfill-mbstring": "^1.23.1",
-                "symfony/polyfill-php80": "^1.23.1"
+                "graham-campbell/result-type": "^1.1.2",
+                "php": "^7.2.5 || ^8.0",
+                "phpoption/phpoption": "^1.9.2",
+                "symfony/polyfill-ctype": "^1.24",
+                "symfony/polyfill-mbstring": "^1.24",
+                "symfony/polyfill-php80": "^1.24"
             },
             "require-dev": {
-                "bamarni/composer-bin-plugin": "^1.4.1",
+                "bamarni/composer-bin-plugin": "^1.8.2",
                 "ext-filter": "*",
-                "phpunit/phpunit": "^7.5.20 || ^8.5.30 || ^9.5.25"
+                "phpunit/phpunit": "^8.5.34 || ^9.6.13 || ^10.4.2"
             },
             "suggest": {
                 "ext-filter": "Required to use the boolean validator."
@@ -6214,7 +6199,7 @@
                     "forward-command": true
                 },
                 "branch-alias": {
-                    "dev-master": "5.5-dev"
+                    "dev-master": "5.6-dev"
                 }
             },
             "autoload": {
@@ -6246,7 +6231,7 @@
             ],
             "support": {
                 "issues": "https://github.com/vlucas/phpdotenv/issues",
-                "source": "https://github.com/vlucas/phpdotenv/tree/v5.5.0"
+                "source": "https://github.com/vlucas/phpdotenv/tree/v5.6.0"
             },
             "funding": [
                 {
@@ -6258,7 +6243,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-10-16T01:01:54+00:00"
+            "time": "2023-11-12T22:43:29+00:00"
         },
         {
             "name": "voku/portable-ascii",
@@ -10562,5 +10547,5 @@
         "php": "^8.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
